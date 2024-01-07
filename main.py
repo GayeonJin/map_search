@@ -39,15 +39,17 @@ def start() :
 
     gctrl.draw_string(TITLE_STR, 0, 0, ALIGN_CENTER, 40, COLOR_BLACK)
 
-    help_str = ['d : Dijkstra',
-                'a : A-star',
-                'b : BFS',
-                'c : DFS',
-                'x : exit']
+    menus = {
+        pygame.K_d : ['Dijkstra', 'd : Dijkstra'],
+        pygame.K_a : ['A-star', 'a : A-star'],
+        pygame.K_b : ['BFS', 'b : BFS'],
+        pygame.K_c : ['DFS', 'c : DFS'],
+        pygame.K_x : ['exit', 'x : exit'],
+    }
 
-    for i, help in enumerate(help_str) :
-        y_offset = 150 - i * 30
-        gctrl.draw_string(help, 0, y_offset, ALIGN_CENTER | ALIGN_BOTTOM, 30, COLOR_BLUE)
+    for i, key in enumerate(menus) :
+        y_offset = 150 - i * 25
+        gctrl.draw_string(menus[key][1], 0, y_offset, ALIGN_CENTER | ALIGN_BOTTOM, 25, COLOR_BLUE)
 
     while True :
         for event in pygame.event.get():
@@ -56,20 +58,18 @@ def start() :
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     terminate()
-                elif event.key == pygame.K_d :
-                    return 'Dijkstra'
-                elif event.key == pygame.K_a :
-                    return 'A-starx'
-                elif event.key == pygame.K_b :
-                    return 'BFS'
-                elif event.key == pygame.K_c :
-                    return 'DFS'
                 elif event.key == pygame.K_x :
                     terminate()
-
+                else :
+                    if event.key in menus :
+                        return menus[event.key][0]                    
+ 
         pygame.display.update()
         gctrl.clock.tick(FPS)    
        
+def run(mode) :
+    print(mode)
+
 def init() :
     gctrl.set_surface(pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)))
     pygame.display.set_caption(TITLE_STR)
@@ -78,12 +78,5 @@ if __name__ == '__main__' :
     init()
     while True :
         mode = start()
-        if mode == 'Dijkstra' :
-            print(mode)
-        elif mode == 'A-star' :
-            print(mode)
-        elif mode == 'BFS' :
-            print(mode)
-        elif mode == 'DFS' :
-            print(mode)
+        run(mode)
 
